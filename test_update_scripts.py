@@ -6,12 +6,17 @@ This script validates the update functionality without making actual changes.
 
 import os
 import sys
+import tempfile
 import unittest
 from unittest.mock import Mock, patch, MagicMock
 
-# Add the parent directory to path to import update_comfyui
+# Import update_comfyui from the same directory
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import update_comfyui
+try:
+    import update_comfyui
+except ImportError:
+    print("Error: update_comfyui module not found")
+    sys.exit(1)
 
 
 class TestComfyUIUpdater(unittest.TestCase):
@@ -19,7 +24,8 @@ class TestComfyUIUpdater(unittest.TestCase):
     
     def setUp(self):
         """Set up test fixtures."""
-        self.test_base_path = "/tmp/test_comfyui"
+        # Use cross-platform temporary directory
+        self.test_base_path = os.path.join(tempfile.gettempdir(), "test_comfyui")
         self.updater = update_comfyui.ComfyUIUpdater(base_path=self.test_base_path)
     
     def test_initialization(self):
@@ -229,11 +235,16 @@ class TestScriptFiles(unittest.TestCase):
         self.assertTrue(os.path.exists(guide_path))
     
     def test_shell_script_executable(self):
-        """Test that the shell script is executable."""
+        """Test that the shell script is executable (Unix only)."""
+        if os.name == 'nt':
+            self.skipTest("Executable test not applicable on Windows")
+        
         script_path = os.path.join(self.base_path, "update_and_restart.sh")
-        if os.path.exists(script_path):
-            is_executable = os.access(script_path, os.X_OK)
-            self.assertTrue(is_executable)
+        if not os.path.exists(script_path):
+            self.fail(f"Shell script not found: {script_path}")
+        
+        is_executable = os.access(script_path, os.X_OK)
+        self.assertTrue(is_executable, "Shell script is not executable")
 
 
 def run_tests():
