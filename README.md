@@ -49,6 +49,33 @@ ComfyUI lets you design and execute advanced stable diffusion pipelines using a 
 #### [Manual Install](#manual-install-windows-linux)
 Supports all operating systems and GPU types (NVIDIA, AMD, Intel, Apple Silicon, Ascend).
 
+## Updating ComfyUI
+
+Keep your ComfyUI installation up-to-date with the automated update scripts:
+
+**Linux/Mac:**
+```bash
+./update_and_restart.sh
+```
+
+**Windows:**
+```batch
+update_and_restart.bat
+```
+
+**Python (All Platforms):**
+```bash
+python update_comfyui.py
+```
+
+The update scripts will:
+- Update ComfyUI core to the latest version
+- Update all installed custom nodes
+- Update Python dependencies
+- Optionally restart ComfyUI
+
+For detailed documentation, troubleshooting, and advanced usage, see [UPDATE_README.md](UPDATE_README.md) and [UPDATE_GUIDE.md](UPDATE_GUIDE.md).
+
 ## [Examples](https://comfyanonymous.github.io/ComfyUI_examples/)
 See what ComfyUI can do with the [example workflows](https://comfyanonymous.github.io/ComfyUI_examples/).
 
